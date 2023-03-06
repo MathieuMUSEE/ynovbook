@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Comments Page</title>
+  </head>
+  <body>
+    <h1>Posts et commentaires</h1>
+    <form id="form">
+      <p>Connecter en tant que '<b id="username"></b>' | <a href="account/logout">deconnexion</a></p>
+      <label for="comment">Comment:</label>
+      <textarea id="comment" name="comment" rows="4" cols="50" required></textarea><br>
+
+      <input type="submit" value="Submit Comment">
+    </form>
+    <p id="connect"><a href="Login">connectez-vous</a> ou <a href="CreateAccount">créez un compte</a> pour écrire un commentaire</p>
+
+    <h2>Post de MathMu : Comment ça va ?</h2>
+    <p></p>
+    <h3>Commentaires :</h3>
+    <ul>
+      <li><strong>MathMu:</strong> Moi ça va</li>
+      <li><strong>Cuira:</strong> C'est une dinguerie a quel point MathMu est insane sur Valorant</li>
+      <li><strong>Towercorner:</strong> Abonnez-vous a ma chaine youtube !</li>
+    </ul>
+  </body>
+  <script>
+      function onClick() {
+
+      }
+
+      fetch(`/account/getUsername`).then((res) => res.json()).then((data) => {
+        document.getElementById("form").style.display = data.Success ? "block" : "none"
+        document.getElementById("connect").style.display = data.Success ? "none" : "block"
+
+        if (!data.Success) return;
+
+        document.getElementById("username").innerHTML = data.Message
+      });
+  </script>
+</html>

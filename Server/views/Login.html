@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Login Page</title>
+  </head>
+  <body>
+    <h1>Connexion</h1>
+    <form>
+      <label for="username">Nom d'utilisateur:</label>
+      <input type="text" id="username" name="username" required><br>
+
+      <label for="password">Mot de passe:</label>
+      <input type="password" id="password" name="password" required><br>
+      <p></p>
+      <h style="color: rgb(255, 25, 25); font-size: 12px;display: none;" id="err">Erreur: UNKNOWN</h><br><br>
+
+      <input type="button" value="Login" onclick="onClick()">
+    </form>
+  </body>
+  <script>
+    let ErrorText = document.getElementById("err")
+    let ErrorMsgs = {
+      ["Missing username"]: "Le nom d'utilisateur doit être renseigné",
+      ["Missing password"]: "Le mot de passe doit être renseigné",
+      ["Auth failed"]: "Nom d'utilisateur ou mot de passe incorrect"
+    }
+
+    function onClick() {
+      let Username = document.getElementById("username").value
+      let Password = document.getElementById("password").value
+
+      console.log(`/account/login?Username=${Username}&Password=${Password}`)
+      fetch(`/account/login?username=${Username}&password=${Password}`).then((res) => res.json()).then((data) => {
+        ErrorText.style.display = "block"
+        ErrorText.style.color = data.Success ? "rgb(0, 125, 0)" : "rgb(255, 25, 25)"
+        
+        if (!data.Success) {
+          console.log(data.Message)
+          ErrorText.innerHTML = "Erreur: " + (ErrorMsgs[data.Message] ?? "UNKNOWN")
+          return;
+        }
+        ErrorText.innerHTML = "Authentification réussi !"
+
+        window.location.href = "/Comment"
+      })
+    }
+  </script>
+</html>
